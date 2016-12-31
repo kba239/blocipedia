@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5'
+gem 'rails', '4.2.7'
 
 group :production do
   gem 'pg'
@@ -20,6 +20,8 @@ gem 'turbolinks'
 gem 'bootstrap'
 gem 'figaro'
 gem 'pry'
+gem 'devise'
+gem 'bootstrap-sass'
 
 group :development, :test do
   gem 'byebug'
