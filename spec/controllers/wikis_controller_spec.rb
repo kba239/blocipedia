@@ -100,7 +100,7 @@ RSpec.describe WikisController, type: :controller do
       new_title = RandomData.random_sentence
       new_body = RandomData.random_paragraph
 
-      put :update, id: my_wiki.id, post: {title: new_title, body: new_body}
+      put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
 
       updated_wiki = assigns(:wiki)
       expect(updated_wiki.id).to eq my_wiki.id
@@ -112,7 +112,7 @@ RSpec.describe WikisController, type: :controller do
       new_title = RandomData.random_sentence
       new_body = RandomData.random_paragraph
 
-      put :update, id: my_wiki.id, post: {title: new_title, body: new_body}
+      put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
       expect(response).to redirect_to my_wiki
     end
   end
