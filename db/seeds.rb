@@ -1,10 +1,9 @@
-require 'random_data'
-
 # Create Users
 2.times do
   User.create!(
-    email:  RandomData.random_email,
-    password:   RandomData.random_sentence
+    user_name: Faker::Internet.user_name,
+    email:  Faker::Internet.unique.email,
+    password:   Faker::Internet.password
   )
 end
 
@@ -16,8 +15,12 @@ users = User.all
 
 50.times do
   Wiki.create!(
-    title:  RandomData.random_sentence,
-    body:   RandomData.random_sentence,
-    user: users.sample
+    title:  Faker::Lorem.sentence,
+    body:   Faker::Lorem.paragraph,
+    user_name: Faker::Internet.user_name
   )
 end
+
+puts "Seed finished"
+puts "#{User.count} users created"
+puts "#{Wiki.count} wikis created"
