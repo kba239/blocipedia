@@ -1,7 +1,7 @@
 # Create Users
 2.times do
   User.create!(
-    user_name: Faker::Internet.user_name,
+#    user_name: Faker::Internet.user_name,
     email:  Faker::Internet.unique.email,
     password:   Faker::Internet.password
   )
@@ -17,7 +17,7 @@ users = User.all
   Wiki.create!(
     title:  Faker::Lorem.sentence,
     body:   Faker::Lorem.paragraph,
-    user_name: Faker::Internet.user_name
+    user: users.sample
   )
 end
 
