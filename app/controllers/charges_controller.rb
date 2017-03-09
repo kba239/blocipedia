@@ -1,4 +1,6 @@
 class ChargesController < ApplicationController
+  before_action :premium
+
   def create
     # Creates a Stripe Customer object, for associating
     # with the charge
@@ -41,5 +43,15 @@ class ChargesController < ApplicationController
   end
 
   def edit
+  end
+
+  private
+  
+  def premium
+    charge = Stripe::Charge(params[:id])
+    unless current_user == current_user.standard?
+      flash[:alert] = "Please pay for a premium account."
+      redirect_to new_charge_path
+    end
   end
 end
