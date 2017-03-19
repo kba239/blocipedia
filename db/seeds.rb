@@ -21,6 +21,17 @@ users = User.all
   )
 end
 
+5.times do
+  Wiki.create!(
+    title:  "Markdown Wiki"
+    body:   Faker::Lorem.sentince
+    * Faker::Lorem.sentence
+    * Faker::Lorem.sentence
+    * Faker::Lorem.sentence
+    user: users.sample
+  )
+end
+
 puts "Seed finished"
 puts "#{User.count} users created"
 puts "#{Wiki.count} wikis created"
