@@ -33,6 +33,10 @@ RSpec.describe User, type: :model do
     it "responds to standard?" do
       expect(user).to respond_to(:standard?)
     end
+
+    it "responds to admin?" do
+      expect(user).to respond_to(:admin?)
+    end
   end
 
   describe "roles" do
@@ -43,6 +47,10 @@ RSpec.describe User, type: :model do
     context "standard" do
       it "returns false for #premium?" do
         expect(user.premium?).to be_falsey
+      end
+
+      it "returns false for #admin?" do
+        expect(user.admin?).to be_falsey
       end
 
       it "returns true for #standard?" do
@@ -61,6 +69,28 @@ RSpec.describe User, type: :model do
 
       it "returns false for #standard?" do
         expect(user.standard?).to be_falsey
+      end
+
+      it "returns false for #admin?" do
+        expect(user.admin?).to be_falsey
+      end
+    end
+
+    context "admin user" do
+      before do
+        user.admin!
+      end
+
+      it "returns false for #standard?" do
+        expect(user.standard?).to be_falsey
+      end
+
+      it "returns false for #premium?" do
+        expect(user.premium?).to be_falsey
+      end
+
+      it "returns true for #admin?" do
+        expect(user.admin?).to be_truthy
       end
     end
   end
