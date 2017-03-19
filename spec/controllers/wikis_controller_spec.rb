@@ -2,10 +2,11 @@ require 'rails_helper'
 
 RSpec.describe WikisController, type: :controller do
 
-  let(:my_wiki) { Wiki.create!(title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph) }
+  let(:user) { FactoryGirl.create(:user)}
+  let(:my_wiki) { Wiki.create!(title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph, user: user) }
   before(:each) do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
-    user = FactoryGirl.create(:user)
+#    @request.env["devise.mapping"] = Devise.mappings[:user]
+#    user = FactoryGirl.create(:user)
     sign_in user
   end
 
