@@ -3,6 +3,11 @@ class WikisController < ApplicationController
 
   def index
     @wikis = Wiki.all
+    @wikis = Wiki.visible_to(current_user)
+
+    if current_user.premium? || current_user.admin?
+      @wikis = Wiki.all?
+    end
   end
 
   def show
@@ -58,7 +63,15 @@ class WikisController < ApplicationController
   private
 
   def wiki_params
-    params.require(:wiki).permit(:title, :body)
+    params.require(:wiki).permit(:title, :body, :private)
   end
 
+#add to only make for private wikis
+  def authorize_user
+    wiki = Wiki.find(params[:id])
+    unless current_user == wiki.user || current_user.admin?
+      flash[:alert] = "You must be an admin to do that."
+      redirect_to wikis_path
+    end
+  end
 end
