@@ -1,6 +1,6 @@
 class ChargesController < ApplicationController
   before_action :authenticate_user!
-  before_action :premium
+  # before_action :premium
 
   def create
     # Creates a Stripe Customer object, for associating
@@ -21,7 +21,7 @@ class ChargesController < ApplicationController
     current_user.update_attribute(:role, 'premium')
 
     flash[:notice] = "Your payment has been received, #{current_user.email}. Thank you!"
-    redirect_to user_path(current_user) # or wherever
+    redirect_to wikis_path # or wherever
 
     # Stripe will send back CardErrors, with friendly messages
     # when something goes wrong.
@@ -32,16 +32,10 @@ class ChargesController < ApplicationController
       redirect_to new_charge_path
   end
 
-#  def index
-#  end
-
-#  def show
-#  end
-
   def new
     @stripe_btn_data = {
       key: "#{ Rails.configuration.stripe[:publishable_key] }",
-      description: "Premium Membership - #{current_user.name}",
+      description: "Premium Membership - #{current_user.email}",
       amount: Amount.default
     }
   end
