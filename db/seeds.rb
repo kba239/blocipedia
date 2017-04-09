@@ -23,11 +23,8 @@ end
 
 5.times do
   Wiki.create!(
-    title:  "Markdown Wiki"
-    body:   Faker::Lorem.sentince
-    * Faker::Lorem.sentence
-    * Faker::Lorem.sentence
-    * Faker::Lorem.sentence
+    title:  "Markdown Wiki",
+    body:   Faker::Lorem.sentence,
     user: users.sample
   )
 end

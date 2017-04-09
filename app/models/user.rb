@@ -8,16 +8,19 @@ class User < ActiveRecord::Base
 
   before_save { self.role ||= :standard }
 
-  # validates :name, length: { minimum: 1, maximum: 100 }, presence: true
-  #
-  # validates :email,
-  #           presence: true,
-  #           uniqueness: { case_sensitive: false },
-  #           length: { minimum: 3, maximum: 254 }
-  # validates :password, presence: true, length: { minimum: 6 }
-  # validates :password, length: { minimum: 6 }, allow_blank: true
+  has_many :wikis, dependent: :destroy
 
-  #has_secure_password
 
   enum role: [:standard, :premium, :admin]
+
+  def downgrade
+    role = 'standard'
+
+    wikis.each { |wiki| wiki.make_public }
+    
+
+    save
+
+  end
+
 end
