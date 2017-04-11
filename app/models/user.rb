@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable
 
 
-  before_save { self.role ||= :standard }
+  before_create { self.role ||= :standard }
 
   has_many :wikis, dependent: :destroy
 
@@ -14,13 +14,21 @@ class User < ActiveRecord::Base
   enum role: [:standard, :premium, :admin]
 
   def downgrade
-    role = 'standard'
+    self.role = :standard
 
     wikis.each { |wiki| wiki.make_public }
-    
 
-    save
+
+    self.save
 
   end
+
+  def collaborators
+     Collaborator.where(user_id: id)
+   end
+
+   def wikis
+     Wiki.where( id: collaborators.pluck(:wiki_id) )
+   end
 
 end

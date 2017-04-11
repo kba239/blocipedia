@@ -2,11 +2,14 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
   let(:user) { FactoryGirl.create(:user)}
+  before(:each) do
+    sign_in user
+  end
 
   describe "GET show" do
     it "returns http success" do
       get :show, {id: user.id}
-      expect(response).to have_http_status(302)
+      expect(response).to have_http_status(:success)
     end
 
     it "renders the #show view" do
@@ -17,17 +20,20 @@ RSpec.describe UsersController, type: :controller do
 
   describe "PUT downgrade" do
     it "downgrades user from premium to standard" do
-      user.role = :premium
-      put :downgrade, {user: user.id}
-      expect(assigns(:user)).to eq(standard)
+      user.premium!
+      put :downgrade, {id: user.id}
+      u=assigns(:user)
+      expect(u.role).to eq('standard')
+      expect(u.standard?).to eq true
     end
 
     it "makes private wikis public" do
-      user.role = :premium
-      put :downgrade, {user: user.id}
-      u=assigns(user)
-      #work on line below
-      expect(assigns(user.wikis)).to eq(public)
+      user.premium!
+      put :downgrade, {id: user.id}
+      u=assigns(:user)
+      u.wikis.each do |wiki|
+        expect(wiki.public?).to eq true
+      end
     end
   end
 end
