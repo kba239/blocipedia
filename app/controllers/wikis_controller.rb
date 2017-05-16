@@ -60,13 +60,44 @@ class WikisController < ApplicationController
     end
   end
 
+  def add_collaborator
+    @wiki = Wiki.find(params[:id])
+    candidate = User.find_by(email: params[:email])
+    @wiki.collaborators.each do |collaborator|
+      if collaborator.email == candidate.email
+        flash[:alert] = "That user is already a collaborator for the wiki."
+        redirect_to wiki_path(@wiki)
+        return
+      end
+    end
+    if candidate.email == @wiki.user.email
+      flash[:alert] = "That user is the owner of the wiki."
+    else
+      @wiki.collaborators << candidate
+    end
+    redirect_to wiki_path(@wiki)
+  end
+
+  def delete_collaborator
+    @wiki = Wiki.find(params[:id])
+    candidate_id = params[:user_id]
+    exists = @wiki.collaborators.pluck(:id).include?(candidate_id.to_i)
+    if exists
+      candidate = User.find(candidate_id)
+      @wiki.collaborators.delete(candidate)
+      flash[:alert] = "That collaborator was removed."
+    else
+      flash[:alert] = "That user is not a collaborator for the wiki."
+    end
+    redirect_to wiki_path(@wiki)
+  end
+
   private
 
   def wiki_params
-    params.require(:wiki).permit(:title, :body, :private)
+    params.require(:wiki).permit(:title, :body, :private, :collaborators)
   end
 
-#add to only make for private wikis
   def authorize_user
     wiki = Wiki.find(params[:id])
     unless current_user == wiki.user || current_user.admin?
