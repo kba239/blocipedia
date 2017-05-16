@@ -1,5 +1,11 @@
 <h1><%= markdown(@wiki.title) %></h1>
-
+  <h2>Collaborators</h2>
+  <% @wiki.collaborators.each do |collaborator| %>
+    <%= collaborator.email %>
+    <%= link_to 'Delete Collaborator', delete_collaborator_wiki_path(@wiki, user_id: collaborator.id), class: 'btn btn-danger',
+            method: :put,
+            data: { confirm: 'Are you sure you want to delete the collaborator?'} %>
+  <% end %>
 <div class="row">
   <div class="col-md-8">
     <p><%= markdown(@wiki.body) %></p>
@@ -9,5 +15,12 @@
     <%= link_to 'Delete Wiki', @wiki, class: 'btn btn-danger',
             method: :delete,
             data: { confirm: 'Are you sure you want to delete your Wiki'} %>
+    <%= form_tag add_collaborator_wiki_path(@wiki), method: :put do %>
+      <label> Collaborator Email: </label>
+    <br>
+      <%= email_field_tag 'email' %>
+    <br>
+      <%= submit_tag "Add Collaborator", class: 'btn btn-success' %>
+    <% end %>
   </div>
 </div>

@@ -10,7 +10,6 @@ class ChargesController < ApplicationController
       card: params[:stripeToken]
     )
 
-    # Where the real magic happens
     charge = Stripe::Charge.create(
       customer: customer.id, # Note -- this is NOT the user_id in your app
       amount: Amount.default,
@@ -39,17 +38,4 @@ class ChargesController < ApplicationController
       amount: Amount.default
     }
   end
-
-#  def edit
-#  end
-
-  # private
-  #
-  # def premium
-  #   charge = Stripe::Charge(params[:id])
-  #   unless current_user == current_user.standard?
-  #     flash[:alert] = "Please pay for a premium account."
-  #     redirect_to new_charge_path
-  #   end
-  # end
 end

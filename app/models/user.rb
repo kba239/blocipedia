@@ -1,6 +1,4 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable
@@ -9,6 +7,8 @@ class User < ActiveRecord::Base
   before_create { self.role ||= :standard }
 
   has_many :wikis, dependent: :destroy
+  has_many :collaborations
+  has_many :collaborating_wikis, through: :collaborations, source: :wiki
 
 
   enum role: [:standard, :premium, :admin]
@@ -22,13 +22,5 @@ class User < ActiveRecord::Base
     self.save
 
   end
-
-  def collaborators
-     Collaborator.where(user_id: id)
-   end
-
-   def wikis
-     Wiki.where( id: collaborators.pluck(:wiki_id) )
-   end
 
 end
