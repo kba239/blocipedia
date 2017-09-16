@@ -18,10 +18,5 @@
 * Pundit for authorization
 * Stripe for payments
 
-### View of All Wikis
-![All Wikis](https://github.com/kba239/blocipedia/app/assets/images/blocipedia_all_wikis.png?raw=true)
-
-### View of Individual Wiki
-![Individual Wikis](https://github.com/kba239/blocipedia/app/assets/images/blocipedia_view_wiki.png?raw=true)
 
 Find Blocipedia on Heroku here: https://fierce-headland-53229.herokuapp.com/
